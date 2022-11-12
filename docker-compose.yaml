@@ -2,7 +2,7 @@ version: '3'
 services:
   database:
     image: mysql
-    container_name: mysql
+    container_name: mysqlnd
     environment:
       MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: achatdb   
