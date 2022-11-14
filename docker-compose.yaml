@@ -24,15 +24,4 @@ services:
 
 networks:
   AppNet:
-    angular:
-    image: absnader/front
-    container_name: angular
-    ports: 
-      - 80:80
-    depends_on:
-      - spring-boot
-    networks:
-      - AppNet
-  
-networks:
-  AppNet:
+
