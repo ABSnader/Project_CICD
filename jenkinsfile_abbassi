@@ -8,7 +8,7 @@ pipeline{
      
         
         stages{  
-/*
+
 
                             stage('Test unitaires + mock') {
                               steps {
@@ -62,7 +62,7 @@ pipeline{
                    sh 'docker push absnader/springprojet:latest'
                 }
             }
-        }*/
+        }
 	stage('Jenkins mail Notification'){
             steps{
                 
