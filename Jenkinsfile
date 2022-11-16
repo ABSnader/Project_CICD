@@ -55,7 +55,7 @@ pipeline {
             }
         }
         
-        /*stage('Pull Jar From Nexus') {
+        stage('Pull Jar From Nexus') {
             steps {
                 sh "curl http://192.168.56.10:8081/repository/maven-releases/tn/esprit/rh/achat/1.0/achat-1.0.jar --output achat-1.0.jar";
             }
@@ -87,7 +87,7 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
         
         /*stage('Build Image') {
             steps{
