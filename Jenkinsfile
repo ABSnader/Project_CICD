@@ -40,8 +40,8 @@ pipeline {
                     [
                         artifactId: 'achat', 
                         classifier: '', 
-                        file: 'pom.xml', 
-                        type: 'pom'
+                        file: 'target/achat-1.0.jar', 
+                        type: 'jar'
                     ]
                 ], 
                 credentialsId: 'nexus', 
@@ -55,7 +55,40 @@ pipeline {
             }
         }
         
-        stage('Build Image') {
+        /*stage('Pull Jar from Nexus'){
+            steps{
+                sh "curl http://192.168.43.117:8081/repository/maven-releases/com/esprit/examen/tpAchatProject/1.0/tpAchatProject-1.0.jar --output tpAchatProject-1.0.jar";
+            }
+        }
+      
+        stage('build docker image') {
+            steps {
+              
+                script{
+                    dockerImage = docker.build "192.168.43.117:8083/repository/yassine/tpachat:latest"
+                }
+            }
+        }
+           stage('Push image to Nexus') {
+            steps {
+                script{
+                    withDockerRegistry([credentialsId: 'nexus3', url: 'http://192.168.43.117:8083/repository/yassine/']) {
+                        sh "docker push 192.168.43.117:8083/repository/yassine/tpachat:latest"
+                    }
+                }
+            }
+        }
+        stage('Pull image from Nexus') {
+            steps {
+                script{
+                    withDockerRegistry([credentialsId: 'nexus3', url: 'http://192.168.43.117:8083/repository/yassine/']) {
+                        sh "docker pull 192.168.43.117:8083/repository/yassine/tpachat:latest"
+                    }
+                }
+            }
+        }*/
+        
+        /*stage('Build Image') {
             steps{
                 sh 'docker build -t salmabha/salma_dev:latest .'
             }
@@ -67,7 +100,7 @@ pipeline {
             }
         }
         
-		/*stage('Push Image'){
+		stage('Push Image'){
             steps{
                 sh 'docker push salmabha/salma_dev:latest'
             }
