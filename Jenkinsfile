@@ -34,8 +34,8 @@ pipeline {
             }
         }
         
-        stage('Nexus3'){
-            steps{
+        stage('Nexus3') {
+            steps {
                 nexusArtifactUploader artifacts: [
                     [
                         artifactId: 'achat', 
@@ -55,38 +55,39 @@ pipeline {
             }
         }
         
-        /*stage('Pull Jar from Nexus'){
-            steps{
-                sh "curl http://192.168.43.117:8081/repository/maven-releases/com/esprit/examen/tpAchatProject/1.0/tpAchatProject-1.0.jar --output tpAchatProject-1.0.jar";
+        stage('Pull Jar From Nexus') {
+            steps {
+                sh "curl http://192.168.56.10:8081/repository/maven-releases/tn/esprit/rh/achat/1.0/achat-1.0.jar --output achat-1.0.jar";
             }
         }
       
-        stage('build docker image') {
+        stage('Build Docker Image') {
             steps {
               
                 script{
-                    dockerImage = docker.build "192.168.43.117:8083/repository/yassine/tpachat:latest"
+                    dockerImage = docker.build "192.168.56.10:8083/repository/salma/achat:latest"
                 }
             }
         }
-           stage('Push image to Nexus') {
+           stage('Push Image To Nexus') {
             steps {
                 script{
-                    withDockerRegistry([credentialsId: 'nexus3', url: 'http://192.168.43.117:8083/repository/yassine/']) {
-                        sh "docker push 192.168.43.117:8083/repository/yassine/tpachat:latest"
+                    withDockerRegistry([credentialsId: 'nexus', url: 'http://192.168.56.10:8083/repository/salma/']) {
+                        sh "docker push 192.168.56.10:8083/repository/salma/achat:latest"
                     }
                 }
             }
         }
-        stage('Pull image from Nexus') {
+        
+        stage('Pull Image From Nexus') {
             steps {
                 script{
-                    withDockerRegistry([credentialsId: 'nexus3', url: 'http://192.168.43.117:8083/repository/yassine/']) {
-                        sh "docker pull 192.168.43.117:8083/repository/yassine/tpachat:latest"
+                    withDockerRegistry([credentialsId: 'nexus', url: 'http://192.168.56.10:8083/repository/salma/']) {
+                        sh "docker pull 192.168.56.10:8083/repository/salma/achat:latest"
                     }
                 }
             }
-        }*/
+        }
         
         /*stage('Build Image') {
             steps{
