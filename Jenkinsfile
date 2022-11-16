@@ -79,13 +79,13 @@ pipeline {
             }
         }
         
-        post {
+        /*post {
             failure {
                 mail to: "salma.belhadjali@esprit.tn",
                 subject: "Build Fail",
                 body: "Fail"
             }
-        }
+        }*/
         
     }
 }
