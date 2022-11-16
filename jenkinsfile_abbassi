@@ -5,7 +5,7 @@ pipeline{
      jdk 'JAVA_HOME' 
      maven 'M2_HOME'
   }
-     
+     /*
         
         stages{  
 
@@ -62,7 +62,7 @@ pipeline{
                    sh 'docker push absnader/springprojet:latest'
                 }
             }
-        }
+        }*/
 	stage('Jenkins mail Notification'){
             steps{
                 
