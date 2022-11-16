@@ -64,11 +64,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
               
-                script{
+                script {
                     dockerImage = docker.build "192.168.56.10:8083/repository/salma/achat:latest"
                 }
             }
         }
+        
            stage('Push Image To Nexus') {
             steps {
                 script{
