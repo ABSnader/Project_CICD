@@ -1,7 +1,7 @@
 package tn.esprit.rh.achat;
 
 
-import org.junit.Test;
+
 
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -10,6 +10,19 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.anyLong;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import tn.esprit.rh.achat.entities.Produit;
 import tn.esprit.rh.achat.entities.Stock;
@@ -17,77 +30,118 @@ import tn.esprit.rh.achat.repositories.ProduitRepository;
 import tn.esprit.rh.achat.repositories.StockRepository;
 import tn.esprit.rh.achat.services.ProduitServiceImpl;
 import tn.esprit.rh.achat.services.StockServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class ProduitServiceMockTest {
 
-
-    @Mock
-    StockRepository sr;
-    @InjectMocks
-    StockServiceImpl ss;
-
-    @Mock
-    ProduitRepository produitRepository;
-
+   @Mock
+   ProduitRepository produitRepository;
    @InjectMocks
    ProduitServiceImpl produitService;
 
-    Produit p1 = new Produit(55L, "2365","produit1",50);
-    Produit p2 = new Produit(66L, "5681","produit5",120);
+   Produit p = Produit.builder().idProduit((long) 7).libelleProduit("javel").codeProduit("adf8").build();
 
+   @Test
+   public void AddProduit() {
+   Produit p_add = new Produit();
+   p_add.setLibelleProduit("javel add");
+   p_add.setCodeProduit("adf8 add");
 
-    List<Produit> listProduits = new ArrayList<Produit>() {
-        {
-            add(p1);
-            add(new Produit(90L, "9687","produit2",30));
-            add(new Produit(46L, "4503","produit3",70));
-        }
-    };
+   Mockito.when(produitRepository.save(ArgumentMatchers.any(Produit.class))).thenReturn(p_add);
 
+   Produit p_added = produitService.addProduit(p_add);
 
-
-    @Test
-    public void testRetrieveProduit() {
-
-        Mockito.when(produitRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(p1));
-        Produit produit1 = produitService.retrieveProduit(55L);
-        assertNotNull(produit1);
-        System.out.println("1");
-        assertEquals(produit1.getIdProduit(),55L);
+   assertEquals(p_add.getLibelleProduit(), p_added.getLibelleProduit());
+   assertEquals(p_add.getCodeProduit(), p_added.getCodeProduit());
+   verify(produitRepository).save(p_add);
    }
 
-    @Test
-    public void testretrieveAllProduits() {
-        Mockito.when(produitRepository.findAll()).thenReturn(listProduits);
-        List<Produit> listproduit3 = produitService.retrieveAllProduits();
-        assertEquals(3, listproduit3.size());
-        //assertEquals(produit1.getIdProduit(),55L);
-        System.out.println("2555");
-    }
+   @Test
+   public void RetrieveProduitById() {
 
-    @Test
-    public void testaddProduit(){
-        Mockito.when(produitRepository.save(p1)).thenReturn(p1);
-        Produit produit1 = produitService.addProduit(p1);
-        //assertNotNull(produit1);
-        Mockito.verify(produitRepository, times(1)).save(Mockito.any(Produit.class));
-        System.out.println("3");
-    }
+   Mockito.when(produitRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(p));
+   Produit p_get = produitService.retrieveProduit((long) 7);
+   assertNotNull(p_get);
+   verify(produitRepository).findById(Mockito.anyLong());
+   }
 
-  
+   @Test
+   public void RetrieveAll() {
+   List<Produit> produits = new ArrayList<>();
+   produits.add(new Produit());
 
+   when(produitRepository.findAll()).thenReturn(produits);
 
+   List<Produit> expected = produitService.retrieveAllProduits();
 
+   assertEquals(expected, produits);
+   verify(produitRepository).findAll();
+   }
 
-}
+   @Test
+   public void DeleteProduit_ifFound() {
+   Produit p = new Produit();
+   p.setLibelleProduit("javel delete");
+   p.setIdProduit(1L);
+
+   when(produitRepository.findById(p.getIdProduit())).thenReturn(Optional.of(p));
+
+   produitService.deleteProduit(p.getIdProduit());
+   verify(produitRepository).deleteById(p.getIdProduit());
+   }
+
+   @Test
+   public void DeleteException_ifnotFound() {
+   try {
+   Produit p = new Produit();
+   p.setIdProduit(2L);
+   p.setLibelleProduit("javeeel");
+
+   when(produitRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+   produitService.deleteProduit(p.getIdProduit());
+   } catch (Exception e) {
+   String expectedMessage = "entity with id";
+   String actualMessage = e.getMessage();
+
+   assertTrue(actualMessage.contains(expectedMessage));
+   }
+   }
+
+   @Test
+   public void EditProduit_ifFound() {
+   	Produit p_edit = new Produit();
+   p_edit.setIdProduit(3L);
+   	p_edit.setLibelleProduit("javel edit");
+   	Produit new_p_edit = new Produit();
+   new_p_edit.setLibelleProduit("new javel edit");
+
+   when(produitRepository.findById(p_edit.getIdProduit())).thenReturn(Optional.of(p_edit));
+   p_edit = produitService.updateProduit(new_p_edit);
+
+   verify(produitRepository).save(p_edit);
+   }
+
+   @Test
+   public void EditException_ifnotFound() {
+   try {
+   	Produit p_edit = new Produit();
+   	p_edit.setIdProduit(4L);
+   	p_edit.setLibelleProduit("javel edit");
+
+   Produit new_p_edit = new Produit();
+   new_p_edit.setIdProduit(5L);
+   new_p_edit.setLibelleProduit("new javel edit");
+
+   when(produitRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+   produitService.updateProduit(new_p_edit);
+
+   } catch (Exception e) {
+   String expectedMessage = "entity with id";
+   String actualMessage = e.getMessage();
+
+   assertTrue(actualMessage.contains(expectedMessage));
+   }
+   }
+   }
