@@ -1,18 +1,6 @@
 package tn.esprit.rh.achat;
 
 
-
-
-
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -24,6 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+
+
+
+
 import tn.esprit.rh.achat.entities.Produit;
 import tn.esprit.rh.achat.entities.Stock;
 import tn.esprit.rh.achat.repositories.ProduitRepository;
@@ -32,7 +32,10 @@ import tn.esprit.rh.achat.services.ProduitServiceImpl;
 import tn.esprit.rh.achat.services.StockServiceImpl;
 import static org.mockito.Mockito.times;
 
+
+
 @SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class ProduitServiceMockTest {
 
    @Mock
