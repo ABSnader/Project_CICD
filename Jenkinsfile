@@ -7,8 +7,19 @@ pipeline {
                 echo 'Pulling...';
                   git branch: 'Operateur',
                   url : 'https://github.com/ABSnader/Project_CICD.git',
-                  credentialsId:'gitID';
-                  
+                  credentialsId:'gitID';  
+            }
+        }
+        
+        stage('Maven Clean') {
+            steps {
+                sh './mvnw clean'
+            }
+        }
+        
+       stage('Maven Compile') {
+            steps {
+                sh './mvnw compile'
             }
         }
         
@@ -90,37 +101,10 @@ pipeline {
             }
         }
         
-        /*stage('Build Image') {
-            steps{
-                sh 'docker build -t salmabha/salma_dev:latest .'
-            }
-        }
-        
-		stage('Docker Login'){
-            steps{
-                sh 'docker login -u salmabha -p azerty123'
-            }
-        }
-        
-		stage('Push Image'){
-            steps{
-                sh 'docker push salmabha/salma_dev:latest'
-            }
-        }*/
-        
 		stage('Docker Compose') {
             steps {
                 sh 'docker-compose up -d '
             }
         }
-        
-        /*post {
-            failure {
-                mail to: "salma.belhadjali@esprit.tn",
-                subject: "Build Fail",
-                body: "Fail"
-            }
-        }*/
-        
     }
 }
