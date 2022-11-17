@@ -56,7 +56,7 @@ pipeline{
             steps{
                 script{
 		withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                   sh 'docker login -u samir1996 -p $dockerhubpwd docker.io'
+                   sh 'docker login -u zaynebchniba -p $dockerhubpwd docker.io'
 }
 
                    sh 'docker push zaynebchniba/springprojet:latest'
