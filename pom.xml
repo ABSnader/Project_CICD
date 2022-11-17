@@ -82,6 +82,19 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -99,6 +112,11 @@
  			<plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version> <!-- matters until now-->
+                <configuration>
+					<includes>
+						<include>ProduitServiceMockTest.java</include>
+					</includes>
+				</configuration>
                 <dependencies>
                     <!-- to let surefire to run JUnit 4 but also JUnit 5 tests -->
                     <dependency>
