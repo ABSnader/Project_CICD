@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -35,7 +34,6 @@ import static org.mockito.Mockito.times;
 
 
 @SpringBootTest
-@RunWith(MockitoJUnitRunner.class)
 public class ProduitServiceMockTest {
 
    @Mock
