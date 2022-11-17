@@ -35,7 +35,7 @@ pipeline {
        stage ('SonarQube') {
             steps {
                 withSonarQubeEnv('sonarqube-8.9.7') { 
-                    sh './mvnw sonar:sonar'
+                    sh "./mvnw sonar:sonar -DskipTests=true -Dsonar.host.url=http://192.168.56.10:9000 -Dsonar.login=admin -Dsonar.password=azerty123"
         }
       }
     }
