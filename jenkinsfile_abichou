@@ -10,7 +10,7 @@ pipeline{
         stages{  
 
 
-                            stage('unitestandmock') {
+                            stage('Test unitaires + mock') {
                               steps {
                                script {
                                 sh 'echo "Test is processing ...."'
@@ -21,7 +21,7 @@ pipeline{
 
                             }
 
-               stage('codequalitysonarqube'){
+               stage('sonnarqube(qualite de code'){
                   steps{
                       script{
 			      withSonarQubeEnv('sonar') {
@@ -38,21 +38,21 @@ pipeline{
                  	}
                	 }
               }
-		stage('jar building') {
+		stage("build jar") {
             steps {
                 script {
                     sh "mvn package -DskipTests=true"
                 }
             }
         }
-	        stage('docker image'){
+	        stage('Build docker image'){
             steps{
                 script{
                     sh 'docker build -t nodoro/springprojet .'
                 }
             }
         }
-	        stage('image to hub'){
+	        stage('Push image to Hub'){
             steps{
                 script{
 		withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
@@ -63,8 +63,14 @@ pipeline{
                 }
             }
         }
-	
-	stage('docker-compose'){
+	stage('Jenkins mail Notification'){
+            steps{
+                
+                    emailext attachLog: true, body: 'This mail is from Jenkins, please check your logs', subject: 'Jenkins Notification', to: 'nader.abbassi@esprit.tn'
+                }
+            
+        }
+	stage('docker compose'){
             steps{
                 
                    sh 'docker-compose up -d'
