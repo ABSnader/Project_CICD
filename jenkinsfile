@@ -9,24 +9,33 @@ pipeline{
      
         
         stages{
+	
+		stage('Pull GIT') {
+            	  steps {
+                  echo 'Pulling...';
+                  git branch: 'Facture',
+                  url : 'https://github.com/ABSnader/Project_CICD.git',
+                  credentialsId:'jenkins';  
+            }
+        }
 
 
-                            stage('Test unitaires & Mock tests') {
-                              steps {
-                               script {
-                                sh 'echo "Test is processing ...."'
-                                sh 'mvn clean test'
-                               }
-
-                              }
-
+               stage('Test unitaires & Mock tests') {
+                   steps {
+                    script {
+                            sh 'echo "Test is processing ...."'
+                            sh 'mvn clean test'
                             }
+                         }
+                  }
 
               stage('SonarQube') {
             	steps {
                 sh "mvn sonar:sonar -DskipTests=true -Dsonar.host.url=http://192.168.1.2:9000 -Dsonar.login=admin -Dsonar.password=sonar"
                }
 	    }
+	    
+	    
 		stage("building jar") {
             steps {
                 script {
@@ -34,6 +43,8 @@ pipeline{
                 }
             }
         }
+	
+	
 	        stage('Build Docker Image'){
             steps{
                 script{
@@ -41,12 +52,15 @@ pipeline{
                 }
             }
         }
+	
+	
 	        stage('Pushing image to DockerHub'){
             steps{
                 script{
 		withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
                    sh 'docker login -u zaynebchniba -p $dockerhubpwd docker.io'
 }
+
 
                    sh 'docker push zaynebchniba/springprojet:latest'
                 }
