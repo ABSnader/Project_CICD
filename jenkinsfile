@@ -6,11 +6,8 @@ pipeline{
      maven 'M2_HOME'
         
   }
-     
-        
         stages{
-	
-		stage('Pull GIT') {
+		stage('GIT') {
             	  steps {
                   echo 'Pulling...';
                   git branch: 'Facture',
