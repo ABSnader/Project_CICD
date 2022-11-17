@@ -36,112 +36,90 @@ import static org.mockito.Mockito.times;
 @SpringBootTest
 public class ProduitServiceMockTest {
 
-   @Mock
-   ProduitRepository produitRepository;
-   @InjectMocks
-   ProduitServiceImpl produitService;
+	  @Mock
+	    StockRepository sr;
+	    @InjectMocks
+	    StockServiceImpl ss;
 
-   Produit p = Produit.builder().idProduit((long) 7).libelleProduit("javel").codeProduit("adf8").build();
+	    @Mock
+	    ProduitRepository produitRepository;
 
-   @Test
-   public void AddProduit() {
-   Produit p_add = new Produit();
-   p_add.setLibelleProduit("javel add");
-   p_add.setCodeProduit("adf8 add");
+	   @InjectMocks
+	   ProduitServiceImpl produitService;
 
-   Mockito.when(produitRepository.save(ArgumentMatchers.any(Produit.class))).thenReturn(p_add);
+	    Produit p1 = new Produit(55L, "2365","produit1",50);
+	    Produit p2 = new Produit(66L, "5681","produit5",120);
 
-   Produit p_added = produitService.addProduit(p_add);
 
-   assertEquals(p_add.getLibelleProduit(), p_added.getLibelleProduit());
-   assertEquals(p_add.getCodeProduit(), p_added.getCodeProduit());
-   verify(produitRepository).save(p_add);
-   }
+	    List<Produit> listProduits = new ArrayList<Produit>() {
+	        {
+	            add(p1);
+	            add(new Produit(90L, "9687","produit2",30));
+	            add(new Produit(46L, "4503","produit3",70));
+	        }
+	    };
 
-   @Test
-   public void RetrieveProduitById() {
 
-   Mockito.when(produitRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(p));
-   Produit p_get = produitService.retrieveProduit((long) 7);
-   assertNotNull(p_get);
-   verify(produitRepository).findById(Mockito.anyLong());
-   }
 
-   @Test
-   public void RetrieveAll() {
-   List<Produit> produits = new ArrayList<>();
-   produits.add(new Produit());
+	    @Test
+	    public void testRetrieveProduit() {
 
-   when(produitRepository.findAll()).thenReturn(produits);
+	        Mockito.when(produitRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(p1));
+	        Produit produit1 = produitService.retrieveProduit(55L);
+	        assertNotNull(produit1);
+	        System.out.println("1");
+	        assertEquals(produit1.getIdProduit(),55L);
+	   }
 
-   List<Produit> expected = produitService.retrieveAllProduits();
+	    @Test
+	    public void testretrieveAllProduits() {
+	        Mockito.when(produitRepository.findAll()).thenReturn(listProduits);
+	        List<Produit> listproduit3 = produitService.retrieveAllProduits();
+	        assertEquals(3, listproduit3.size());
+	        //assertEquals(produit1.getIdProduit(),55L);
+	        System.out.println("2555");
+	    }
 
-   assertEquals(expected, produits);
-   verify(produitRepository).findAll();
-   }
+	    @Test
+	    public void testaddProduit(){
+	        Mockito.when(produitRepository.save(p1)).thenReturn(p1);
+	        Produit produit1 = produitService.addProduit(p1);
+	        //assertNotNull(produit1);
+	        Mockito.verify(produitRepository, times(1)).save(Mockito.any(Produit.class));
+	        System.out.println("3");
+	    }
 
-   @Test
-   public void DeleteProduit_ifFound() {
-   Produit p = new Produit();
-   p.setLibelleProduit("javel delete");
-   p.setIdProduit(1L);
+	    @Test
+	    public void testdeleteProduit(){
+	        produitService.deleteProduit(66L);
+	        Mockito.verify(produitRepository, times(1)).deleteById(66L);
+	        System.out.println("4");
+	    }
 
-   when(produitRepository.findById(p.getIdProduit())).thenReturn(Optional.of(p));
+	    @Test
+	    public void testupdateProduit(){
+	        Mockito.when(produitRepository.save(p1)).thenReturn(p1);
+	        Produit produit1 = produitService.updateProduit(p1);
+	        Mockito.verify(produitRepository, times(1)).save(Mockito.any(Produit.class));
+	        System.out.println("5");
+	    }
 
-   produitService.deleteProduit(p.getIdProduit());
-   verify(produitRepository).deleteById(p.getIdProduit());
-   }
+	    @Test
+	   public void testassignProduitToStock(){
 
-   @Test
-   public void DeleteException_ifnotFound() {
-   try {
-   Produit p = new Produit();
-   p.setIdProduit(2L);
-   p.setLibelleProduit("javeeel");
+	        Stock stock = new Stock();
+	        stock.setIdStock(1L);
+	        stock.setLibelleStock("libelle3");
+	        stock.setQte(20);
+	        stock.setQteMin(1);
 
-   when(produitRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
-   produitService.deleteProduit(p.getIdProduit());
-   } catch (Exception e) {
-   String expectedMessage = "entity with id";
-   String actualMessage = e.getMessage();
+	        Mockito.when(produitRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(p1));
+	        Mockito.when(sr.findById(Mockito.anyLong())).thenReturn(Optional.of(stock));
+	        produitService.assignProduitToStock(55L,1L);
 
-   assertTrue(actualMessage.contains(expectedMessage));
-   }
-   }
+	       // Mockito.verify(sr, times(1)).save(Mockito.any(Stock.class));
+	        Mockito.verify(produitRepository, times(1)).save(Mockito.any(Produit.class));
 
-   @Test
-   public void EditProduit_ifFound() {
-   	Produit p_edit = new Produit();
-   p_edit.setIdProduit(3L);
-   	p_edit.setLibelleProduit("javel edit");
-   	Produit new_p_edit = new Produit();
-   new_p_edit.setLibelleProduit("new javel edit");
-
-   when(produitRepository.findById(p_edit.getIdProduit())).thenReturn(Optional.of(p_edit));
-   p_edit = produitService.updateProduit(new_p_edit);
-
-   verify(produitRepository).save(p_edit);
-   }
-
-   @Test
-   public void EditException_ifnotFound() {
-   try {
-   	Produit p_edit = new Produit();
-   	p_edit.setIdProduit(4L);
-   	p_edit.setLibelleProduit("javel edit");
-
-   Produit new_p_edit = new Produit();
-   new_p_edit.setIdProduit(5L);
-   new_p_edit.setLibelleProduit("new javel edit");
-
-   when(produitRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
-   produitService.updateProduit(new_p_edit);
-
-   } catch (Exception e) {
-   String expectedMessage = "entity with id";
-   String actualMessage = e.getMessage();
-
-   assertTrue(actualMessage.contains(expectedMessage));
-   }
-   }
+	        System.out.println("6");
+	    }
    }

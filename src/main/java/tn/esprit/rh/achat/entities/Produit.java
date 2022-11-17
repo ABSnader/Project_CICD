@@ -1,7 +1,6 @@
 package tn.esprit.rh.achat.entities;
 
 import java.io.Serializable;
-
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -14,17 +13,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Produit implements Serializable {
 
 	/**
@@ -50,10 +47,13 @@ public class Produit implements Serializable {
 	@ManyToOne
 	@JsonIgnore
 	private CategorieProduit categorieProduit;
-	
-	
 
+	public Produit(Long idProduit, String codeProduit, String libelleProduit, float prix) {
+		this.idProduit = idProduit;
+		this.codeProduit = codeProduit;
+		this.libelleProduit = libelleProduit;
+		this.prix = prix;
+	}
 
-	
 
 }
