@@ -13,13 +13,13 @@ pipeline {
         
         stage('Maven Clean') {
             steps {
-                sh './mvnw clean'
+                sh 'mvn clean'
             }
         }
         
        stage('Maven Compile') {
             steps {
-                sh './mvnw compile'
+                sh 'mvn compile'
             }
         }
         
