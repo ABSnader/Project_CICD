@@ -10,7 +10,7 @@ pipeline{
         stages{
 
 
-                            stage('Test unitaires + mock tests') {
+                            stage('Test unitaires & Mock tests') {
                               steps {
                                script {
                                 sh 'echo "Test is processing ...."'
