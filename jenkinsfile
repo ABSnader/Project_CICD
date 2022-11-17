@@ -24,7 +24,7 @@ pipeline{
 
               stage('SonarQube') {
             	steps {
-                sh "./mvnw sonar:sonar -DskipTests=true -Dsonar.host.url=http://192.168.1.2:9000 -Dsonar.login=admin -Dsonar.password=sonar"
+                sh "mvn sonar:sonar -DskipTests=true -Dsonar.host.url=http://192.168.1.2:9000 -Dsonar.login=admin -Dsonar.password=sonar"
                }
 	    }
 		stage("building jar") {
