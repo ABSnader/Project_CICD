@@ -63,13 +63,7 @@ pipeline{
                 }
             }
         }
-	stage('Jenkins mail Notification'){
-            steps{
-                
-                    emailext attachLog: true, body: 'This mail is from Jenkins, please check your logs', subject: 'Jenkins Notification', to: 'nader.abbassi@esprit.tn'
-                }
-            
-        }
+	
 	stage('docker-composer'){
             steps{
                 
