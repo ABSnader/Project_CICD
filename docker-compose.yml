@@ -17,10 +17,10 @@ services:
 
 spring_app:
     image: 192.168.1.15:8083/repository/arij/achat
-    container_name: achat
+     container_name: achat
     restart: on-failure
     environment:
-      - spring.datasource.url=jdbc:mysql://mysqldb:3306/achatdb?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/achatdbcreateDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     ports:
       - 8089:8089
     depends_on:
