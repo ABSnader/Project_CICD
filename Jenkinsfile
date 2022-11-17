@@ -111,7 +111,9 @@ pipeline {
             }
         }
         
-        post{
+    
+    }
+    post {
         always {
             echo 'Slack Notifications.'
             slackSend channel: 'slacknotification',
@@ -123,8 +125,6 @@ pipeline {
                 subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
         }
         
-        
-    }
-    
+      
     }
 }
