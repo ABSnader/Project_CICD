@@ -3,7 +3,7 @@ package tn.esprit.rh.achat;
 
 
 
-import org.junit.runner.RunWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -33,7 +33,6 @@ import tn.esprit.rh.achat.services.StockServiceImpl;
 import static org.mockito.Mockito.times;
 
 @SpringBootTest
-@RunWith(MockitoJUnitRunner.class)
 public class ProduitServiceMockTest {
 
    @Mock
