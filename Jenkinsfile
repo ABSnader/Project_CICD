@@ -32,11 +32,13 @@ pipeline {
             }
         }
         
-        stage('SonarQube') {
+       stage ('SonarQube') {
             steps {
-                sh "./mvnw sonar:sonar -DskipTests=true -Dsonar.host.url=http://192.168.56.10:9000 -Dsonar.login=admin -Dsonar.password=azerty123"
-            }
+                withSonarQubeEnv('sonarqube-8.9.7') { 
+                    sh './mvnw sonar:sonar'
         }
+      }
+    }
         
         stage('Nexus3') {
             steps {
