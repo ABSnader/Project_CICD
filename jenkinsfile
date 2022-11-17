@@ -34,7 +34,7 @@ pipeline{
                 }
             }
         }
-	        stage('Building image Docker'){
+	        stage('Build Docker Image'){
             steps{
                 script{
                     sh 'docker build -t zaynebchniba/springprojet .'
