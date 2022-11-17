@@ -15,23 +15,12 @@ pipeline {
             }
         }
         
-        stage('Maven Clean') {
+        stage('Maven') {
             steps {
                 sh 'mvn clean'
-            }
-        }
-        
-       stage('Maven Compile') {
-            steps {
                 sh 'mvn compile'
-            }
-        }
-        
-        stage('Maven Package') {
-            steps {
                 sh "chmod +x mvnw "
                 sh "./mvnw package -DskipTests=true"
-                
             }
         }
         
