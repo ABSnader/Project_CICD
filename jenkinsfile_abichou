@@ -10,7 +10,7 @@ pipeline{
         stages{  
 
 
-                            stage('Test unitaires + mock') {
+                            stage('unit test and mockt') {
                               steps {
                                script {
                                 sh 'echo "Test is processing ...."'
@@ -21,7 +21,7 @@ pipeline{
 
                             }
 
-               stage('sonnarqube(qualite de code'){
+               stage('code quality with sonnarqube'){
                   steps{
                       script{
 			      withSonarQubeEnv('sonar') {
@@ -38,7 +38,7 @@ pipeline{
                  	}
                	 }
               }
-		stage("build jar") {
+		stage("building jar") {
             steps {
                 script {
                     sh "mvn package -DskipTests=true"
@@ -70,7 +70,7 @@ pipeline{
                 }
             
         }
-	stage('docker compose'){
+	stage('docker-composer'){
             steps{
                 
                    sh 'docker-compose up -d'
