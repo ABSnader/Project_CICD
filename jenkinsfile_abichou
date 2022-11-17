@@ -38,7 +38,7 @@ pipeline{
                  	}
                	 }
               }
-		stage("jar building") {
+		stage('jar building') {
             steps {
                 script {
                     sh "mvn package -DskipTests=true"
