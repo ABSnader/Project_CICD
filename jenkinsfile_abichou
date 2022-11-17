@@ -8,6 +8,16 @@ pipeline{
      
         
         stages{  
+	          
+		stage('GIT') {
+            	  steps {
+                  echo 'Pulling...';
+                  git branch: 'abichou_backend',
+                  url : 'https://github.com/ABSnader/Project_CICD.git',
+                  credentialsId:'jenkins-example';  
+            }
+        }
+	
 
 
                             stage('unit test and mockt') {
