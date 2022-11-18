@@ -55,8 +55,8 @@ pipeline{
 	        stage('Push image to Hub'){
             steps{
                 script{
-		withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                   sh 'docker login -u yasmine1998 -p $dockerhubpwd docker.io'
+		withCredentials([string(credentialsId: 'dockerhub-pwd1', variable: 'dockerhubpwd1')]) {
+                   sh 'docker login -u yasmine1998 -p $dockerhubpwd1 docker.io'
 }
 
                    sh 'docker push yasmine1998/springprojet:latest'
