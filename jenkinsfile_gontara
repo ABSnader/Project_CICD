@@ -64,13 +64,9 @@ pipeline{
             }
         }
 		        stage('Docker compose'){
-            steps{
-                script{
-                   // sh 'docker build -t yasmine1998/springprojet .'
-                }
-            }
+
         }
 	
-}
+
 }
 }
